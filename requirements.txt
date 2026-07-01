@@ -1,0 +1,44 @@
+# ═══════════════════════════════════════════════════════════════════
+# NEXUS OS Bot — Core requirements (Phases 1–4 + API)
+# Everything needed to run the agent, OS control, browser, and backend API.
+# Install:  pip install -r requirements.txt
+# ═══════════════════════════════════════════════════════════════════
+
+# ── Core agent + config ──
+psutil>=5.9                # system/hardware probing, process management
+requests>=2.31            # Ollama HTTP client
+rich>=13.0                # pretty CLI output
+python-dotenv>=1.0        # .env loading (OpenAI key, etc.)
+pydantic>=2.0             # API request/response models
+
+# ── Backend API (REST + WebSocket) ──
+fastapi>=0.110            # web framework
+uvicorn[standard]>=0.27   # ASGI server (includes websockets, httptools)
+websockets>=12.0          # WS streaming
+aiofiles>=23.0            # async file IO
+
+# ── Performance / hardware (Phase 4) ──
+GPUtil>=1.4               # NVIDIA GPU detection (fallback to nvidia-smi)
+py-cpuinfo>=9.0           # detailed CPU model info
+
+# ── OS control (Phase 2) ──
+pyautogui>=0.9.54         # mouse/keyboard/screen input simulation
+pynput>=1.7               # low-level input (used by hotkeys)
+Pillow>=10.0             # image handling (screenshots, tray icon)
+mss>=9.0                  # fast screenshots
+watchdog>=4.0             # filesystem monitoring
+pyperclip>=1.8            # clipboard read/write
+
+# ── Browser automation (Phase 3) ──
+playwright>=1.40          # browser control (run `playwright install chromium` after)
+beautifulsoup4>=4.12      # HTML parsing / text extraction
+lxml>=5.0                 # fast parser backend for bs4
+httpx>=0.27               # async HTTP (used by tests + browser helpers)
+
+# ── Desktop tray (Phase 6, pure-Python part) ──
+pystray>=0.19             # cross-platform system tray icon
+
+# NOTE: opencv is optional — only needed if you add screen vision / OCR.
+# On a desktop:  pip install opencv-python
+# On a server:   pip install opencv-python-headless
+# opencv-python>=4.9

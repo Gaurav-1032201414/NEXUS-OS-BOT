@@ -1,0 +1,61 @@
+{
+  "app_name": "NEXUS OS Bot",
+  "version": "1.0.0",
+  "ollama": {
+    "host": "http://localhost:11434",
+    "timeout": 120,
+    "models": {
+      "light": "phi3:mini",
+      "medium": "llama3.2:3b",
+      "full": "llama3.1:8b"
+    }
+  },
+  "openai": {
+    "api_key_env": "OPENAI_API_KEY",
+    "model": "gpt-4o-mini",
+    "enabled": false
+  },
+  "memory": {
+    "db_path": "~/.nexus/memory.db",
+    "vector_db_path": "~/.nexus/chroma",
+    "max_history_turns": 20,
+    "enable_vector_memory": false
+  },
+  "performance": {
+    "cpu_high_threshold": 85,
+    "ram_minimum_gb": 2.0,
+    "ram_medium_threshold_gb": 5.0,
+    "ram_full_threshold_gb": 10.0,
+    "check_interval_seconds": 30,
+    "enable_gpu_detection": true
+  },
+  "os_control": {
+    "screenshot_path": "/tmp/nexus_screenshots",
+    "enable_screen_control": true,
+    "enable_file_ops": true,
+    "enable_process_control": true,
+    "enable_clipboard": true,
+    "pyautogui_pause": 0.1
+  },
+  "browser": {
+    "headless": false,
+    "timeout": 30000,
+    "browser_type": "chromium"
+  },
+  "api": {
+    "host": "127.0.0.1",
+    "port": 8765,
+    "ws_path": "/ws",
+    "rest_path": "/api"
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "~/.nexus/nexus.log",
+    "max_size_mb": 10
+  },
+  "directory_index": {
+    "scan_interval_seconds": 300,
+    "max_depth": 3,
+    "max_entries": 4000
+  }
+}

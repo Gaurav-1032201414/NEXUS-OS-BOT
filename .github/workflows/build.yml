@@ -1,0 +1,73 @@
+# NEXUS OS Bot — cross-platform release builds
+# Builds desktop installers for Linux, Windows, and macOS in parallel.
+# Triggers on a version tag (v1.0.0) or manual dispatch.
+name: Build NEXUS
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: ubuntu-22.04
+            name: linux
+          - platform: windows-latest
+            name: windows
+          - platform: macos-latest
+            name: macos
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Linux system dependencies
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev libappindicator3-dev \
+            librsvg2-dev patchelf libgtk-3-dev \
+            libayatana-appindicator3-dev
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Generate icons
+        run: |
+          python -m pip install pillow
+          python generate_icons.py
+
+      - name: Install frontend deps
+        run: cd ui && npm install
+
+      - name: Build Tauri app
+        run: cd ui && npm run tauri build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nexus-${{ matrix.name }}
+          path: |
+            ui/src-tauri/target/release/bundle/**/*.deb
+            ui/src-tauri/target/release/bundle/**/*.AppImage
+            ui/src-tauri/target/release/bundle/**/*.rpm
+            ui/src-tauri/target/release/bundle/**/*.dmg
+            ui/src-tauri/target/release/bundle/**/*.exe
+            ui/src-tauri/target/release/bundle/**/*.msi
+          if-no-files-found: ignore

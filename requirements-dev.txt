@@ -1,0 +1,7 @@
+# ═══════════════════════════════════════════════════════════════════
+# NEXUS OS Bot — Dev/test requirements
+# Only needed to run the test suites.
+# Install:  pip install -r requirements-dev.txt
+# ═══════════════════════════════════════════════════════════════════
+httpx>=0.27               # FastAPI TestClient backend
+# (pytest not required — the test_*.py files are standalone runnable scripts)

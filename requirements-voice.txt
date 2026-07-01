@@ -1,0 +1,32 @@
+# ═══════════════════════════════════════════════════════════════════
+# NEXUS OS Bot — Voice requirements (Phase 5)
+# Speech-to-text and text-to-speech.
+# Install:  pip install -r requirements-voice.txt
+#
+# System packages needed first (Linux):
+#   sudo apt install portaudio19-dev espeak-ng ffmpeg
+# ═══════════════════════════════════════════════════════════════════
+
+# ── Speech-to-text (lightweight, preferred) ──
+faster-whisper>=1.0       # uses ctranslate2 — fast, CPU-friendly, ~small download
+                          # downloads its model on first use (base ≈ 145 MB)
+
+# ── Audio capture ──
+sounddevice>=0.4          # microphone recording
+numpy>=1.24               # audio buffers / energy detection
+scipy>=1.11               # WAV writing helper
+
+# ── Text-to-speech ──
+pyttsx3>=2.90             # cross-platform offline TTS fallback
+                          # (Piper neural voice is a separate binary — install_voice_ui.sh)
+
+# ── Optional heavy STT fallback ──
+# openai-whisper pulls in torch + CUDA (several GB). faster-whisper above already
+# covers STT, so this is OFF by default. Only enable if faster-whisper fails on
+# your platform:
+#   pip install openai-whisper
+
+# ── Optional wake word ──
+# pvporcupine>=3.0         # "Hey Nexus" — needs a free Picovoice access key in
+#                          # PORCUPINE_ACCESS_KEY. Without it, NEXUS uses an
+#                          # energy-gate + Whisper fallback automatically.
